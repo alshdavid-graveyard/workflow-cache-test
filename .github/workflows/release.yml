@@ -31,5 +31,5 @@ jobs:
             ${{ runner.os }}-
             ${{ runner.os }}-
 
-      - run: cargo build --release
+      - run: cargo build --release 
   
