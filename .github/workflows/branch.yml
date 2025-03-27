@@ -1,0 +1,35 @@
+name: Release
+
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+on: 
+  push:
+    branches:
+      - "!main"
+      - "*"
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+    name: 🐥 Build
+    runs-on: ubuntu-24.04
+    steps:
+      - { uses: actions/checkout@v4, with: { submodules: true } }
+      - name: Cache Rust
+        id: cache-cargo
+        uses: actions/cache@v4
+        env:
+          cache-name: cache-target
+        with:
+          path: target
+          key: ${{ runner.os }}-${{ env.cache-name }}-${{ github.ref }}
+          restore-keys: |
+            ${{ runner.os }}-${{ env.cache-name }}-${{ github.ref }}
+            ${{ runner.os }}-${{ env.cache-name }}
+
+      - run: cargo build --release 
+  
