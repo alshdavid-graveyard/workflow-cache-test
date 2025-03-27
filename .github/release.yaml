@@ -1,0 +1,23 @@
+name: Release
+
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+on: 
+  push:
+    branches:
+      - "main"
+
+env:
+  PROJECT_NAME: http-server
+  JUST_VERSION: "1.36.0"
+
+jobs:
+  build:
+    name: 🐥 Build
+    runs-on: ubuntu-24.04
+    steps:
+      - { uses: actions/checkout@v4, with: { submodules: true } }
+      - run: cargo build --release
+  
